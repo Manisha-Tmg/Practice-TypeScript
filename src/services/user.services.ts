@@ -81,6 +81,7 @@ export const forgotPasswordService = async (email: string) => {
 
   await user.save();
 };
+
 export const readAllUserService = async () => {
   try {
     const user = await User.findAll();
