@@ -2,6 +2,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../database/model/user.model";
+import { sendEmail } from "../utils/sendMail";
 
 const salt = Number(process.env.BCRYPT_SALT_ROUNDS) || 10;
 const secret_Key = String(process.env.JWT_SECRET_KEY);
@@ -80,6 +81,17 @@ export const forgotPasswordService = async (email: string) => {
   });
 
   await user.save();
+
+  await sendEmail({
+    from: "Reset <uniquekc425@gmail.com>",
+    to: user.email,
+    subject: "Reset your password",
+    html: `
+    <h2>Password Reset opt</h2>
+    <p>${token}</p>
+    <p>This link will expire in 1 hour.</p>
+  `,
+  });
 };
 
 export const readAllUserService = async () => {
