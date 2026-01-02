@@ -94,6 +94,40 @@ export const forgotPasswordService = async (email: string) => {
   });
 };
 
+export const resetPasswordService = async (
+  newPassword: string,
+  confirmPassword: string,
+  token: string,
+) => {
+  try {
+    // get token & decode
+    let decoded: any;
+    decoded = await jwt.verify(token, secret_Key! as any);
+    const userId = decoded.id;
+    if (!decoded) {
+      throw new Error("INVALID_TOKEN");
+    }
+    // find user
+    const user = await User.findByPk(userId);
+
+    if (!user) {
+      throw new Error("USER_NOT_FOUND");
+    }
+
+    if (newPassword !== confirmPassword) {
+      throw new Error("INVALID NEW_PASSWORD & CONFIRM_PASSWORD");
+    }
+    // hash Password
+    const hasshedPassword = await bcrypt.hash(newPassword, 10);
+
+    // update User
+    user.password = hasshedPassword;
+    await user.save();
+  } catch (error) {
+    throw new Error("INVALID_TOKEN");
+  }
+};
+
 export const readAllUserService = async () => {
   try {
     const user = await User.findAll();
