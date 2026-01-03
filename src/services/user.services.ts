@@ -123,6 +123,13 @@ export const resetPasswordService = async (
     // update User
     user.password = hasshedPassword;
     await user.save();
+
+    await sendEmail({
+      email: user.email,
+      subject: "Your password has been changed",
+      message:
+        "This is a confirmation that your account password was successfully changed. If this was not you, please contact support immediately.",
+    });
   } catch (error) {
     throw new Error("INVALID_TOKEN");
   }
