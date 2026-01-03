@@ -135,6 +135,18 @@ export const resetPasswordService = async (
   }
 };
 
+export const myProfileService = async (id: string) => {
+  if (!id) {
+    throw new Error("ID_NOT_FOUND");
+  }
+  const user = await User.findByPk(id);
+
+  if (!user) {
+    throw new Error("USER_NOT_FOUND");
+  }
+  return user;
+};
+
 export const readAllUserService = async () => {
   try {
     const user = await User.findAll();
