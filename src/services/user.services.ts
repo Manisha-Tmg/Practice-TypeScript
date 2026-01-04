@@ -156,3 +156,15 @@ export const readAllUserService = async () => {
     throw new Error("USER_LOAD_FAILED");
   }
 };
+
+export const readUserByIdService = async (id: string) => {
+  if (!id) {
+    throw new Error("ID_NOT_FOUND");
+  }
+  const user = await User.findByPk(id);
+
+  if (!user) {
+    throw new Error("USER_NOT_FOUND");
+  }
+  return user;
+};
