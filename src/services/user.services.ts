@@ -168,3 +168,16 @@ export const readUserByIdService = async (id: string) => {
   }
   return user;
 };
+export const updateMyProfileService = async (id: string, data: any) => {
+  if (!id) {
+    throw new Error("ID_NOT_FOUND");
+  }
+  const user = await User.findByPk(id);
+
+  if (!user) {
+    throw new Error("PROFILE_UPDATE_FAILED");
+  }
+  user.set(data);
+  user.save();
+  return user;
+};
