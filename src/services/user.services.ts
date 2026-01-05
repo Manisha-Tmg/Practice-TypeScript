@@ -181,3 +181,38 @@ export const updateMyProfileService = async (id: string, data: any) => {
   user.save();
   return user;
 };
+
+export const updatePasswordService = async (
+  id: string,
+  oldPassword: string,
+  newPassword: string,
+  confirmPassword: string,
+) => {
+  if (!id) {
+    throw new Error("ID_NOT_FOUND");
+  }
+  const user = await User.findByPk(id);
+
+  if (!user) {
+    throw new Error("USER_NOTFOUND");
+  }
+  const verifyPassword = await bcrypt.compare(oldPassword, user.password);
+  console.log(verifyPassword);
+  if (!verifyPassword) {
+    throw new Error("OLD_PASSWORD_DIDNOT_MATCH");
+  }
+
+  if (newPassword !== confirmPassword) {
+    throw new Error("NEW_PASSWORD AND CONFIRM_PASSWORFD DIDNOT MATCH");
+  }
+  const hasshedPassword = await bcrypt.hash(newPassword, Number(salt));
+  user.password = hasshedPassword;
+  await user.save();
+
+  await sendEmail({
+    email: user.email,
+    subject: "Your password has been changed",
+    message:
+      "This is a confirmation that your account password was successfully changed. If this was not you, please contact support immediately.",
+  });
+};
