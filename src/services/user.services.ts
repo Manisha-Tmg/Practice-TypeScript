@@ -216,3 +216,16 @@ export const updatePasswordService = async (
       "This is a confirmation that your account password was successfully changed. If this was not you, please contact support immediately.",
   });
 };
+
+export const deleteUserByIdService = async (id: string) => {
+  if (!id) {
+    throw new Error("ID_NOT_FOUND");
+  }
+  const user = await User.findByPk(id);
+
+  if (!user) {
+    throw new Error("USER_NOTFOUND");
+  }
+  user.destroy();
+  return user;
+};
