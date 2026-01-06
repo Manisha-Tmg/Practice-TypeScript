@@ -14,7 +14,13 @@ export const createUser = async (
     const { name, email, password, address, phone } = req.body;
     const user = await createUserService(name, email, password, address, phone);
 
-    return sendSuccessMessage(res, "User created successfully", 200, user);
+    return sendSuccessMessage(res, "User created successfully", 200, {
+      id: user?.id,
+      name: user?.name,
+      email: user?.email,
+      address: user?.address,
+      role: user?.role,
+    });
   } catch (err: any) {
     if (
       err.message === "USER_EXIST" ||
