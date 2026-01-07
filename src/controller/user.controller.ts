@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import {
   createUserService,
+  forgotPasswordService,
   loginUserService,
   readAllUserService,
 } from "../services/user.services";
@@ -63,5 +64,25 @@ export const readAllUser = async (
       return sendErrorMessage(res, "Error occurred during loadings", 400);
     }
     return sendErrorMessage(res, "Internal server error", 500);
+  }
+};
+
+export const forgotPassword = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  try {
+    const user = await forgotPasswordService(req.body.email);
+    sendSuccessMessage(
+      res,
+      `Reset Password link send to ${req.body.email}`,
+      200,
+      null,
+    );
+  } catch (err: any) {
+    if (err.message === "Invalid_EMAIL") {
+      sendErrorMessage(res, "Email not registered", 400);
+    }
+    sendErrorMessage(res, "User Not found", 400);
   }
 };
