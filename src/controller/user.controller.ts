@@ -4,6 +4,7 @@ import {
   forgotPasswordService,
   loginUserService,
   readAllUserService,
+  resetPasswordService,
 } from "../services/user.services";
 import { sendErrorMessage, sendSuccessMessage } from "../utils/responseHelper";
 
@@ -84,5 +85,40 @@ export const forgotPassword = async (
       sendErrorMessage(res, "Email not registered", 400);
     }
     sendErrorMessage(res, "User Not found", 400);
+  }
+};
+
+export const resetPassword = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  try {
+    let token: any;
+    token = req.headers.authorization?.split(" ")[1];
+
+    const newPassword = req.body.password;
+    const confirmPassword = req.body.confirmPassword;
+
+    const user = await resetPasswordService(
+      newPassword,
+      confirmPassword,
+      token,
+    );
+    sendSuccessMessage(res, "Password reset was successful", 200, user as any);
+  } catch (err: any) {
+    if (err.message === "INVALID NEW_PASSWORD & CONFIRM_PASSWORD") {
+      sendErrorMessage(
+        res,
+        "NewPassword and ConfirmPassowrd Didnot match",
+        400,
+      );
+    }
+    if (err.message === "INVALID_TOKEN") {
+      sendErrorMessage(res, "Token expired", 400);
+    }
+    if (err.message === "USER_NOT_FOUND") {
+      sendErrorMessage(res, "User not found", 400);
+    }
+    sendErrorMessage(res, "Error reseting password .Try again later", 400);
   }
 };
