@@ -3,6 +3,7 @@ import {
   createUserService,
   forgotPasswordService,
   loginUserService,
+  myProfileService,
   readAllUserService,
   resetPasswordService,
 } from "../services/user.services";
@@ -120,5 +121,20 @@ export const resetPassword = async (
       sendErrorMessage(res, "User not found", 400);
     }
     sendErrorMessage(res, "Error reseting password .Try again later", 400);
+  }
+};
+
+export const readUserById = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  try {
+    let userId = req.params.id as string;
+    const user = await myProfileService(userId);
+    sendSuccessMessage(res, "Profile fetched successfully", 200, user as any);
+  } catch (err: any) {
+    if (err.message === "ID_NOT_FOUND" || err.message === "USER_NOT_FOUND") {
+      sendErrorMessage(res, "Error fetching profile", 400);
+    }
   }
 };
