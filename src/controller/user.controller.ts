@@ -5,6 +5,7 @@ import {
   loginUserService,
   myProfileService,
   readAllUserService,
+  readUserByIdService,
   resetPasswordService,
 } from "../services/user.services";
 import { sendErrorMessage, sendSuccessMessage } from "../utils/responseHelper";
@@ -130,6 +131,18 @@ export const readUserById = async (
 ): Promise<void> => {
   try {
     let userId = req.params.id as string;
+    const user = await readUserByIdService(userId);
+    sendSuccessMessage(res, "Profile fetched successfully", 200, user as any);
+  } catch (err: any) {
+    if (err.message === "ID_NOT_FOUND" || err.message === "USER_NOT_FOUND") {
+      sendErrorMessage(res, "Error fetching profile", 400);
+    }
+  }
+};
+
+export const myProfile = async (req: Request, res: Response): Promise<void> => {
+  try {
+    let userId = (req as any).id;
     const user = await myProfileService(userId);
     sendSuccessMessage(res, "Profile fetched successfully", 200, user as any);
   } catch (err: any) {
