@@ -8,6 +8,7 @@ import {
   readUserByIdService,
   resetPasswordService,
   updateMyProfileService,
+  updatePasswordService,
 } from "../services/user.services";
 import { sendErrorMessage, sendSuccessMessage } from "../utils/responseHelper";
 
