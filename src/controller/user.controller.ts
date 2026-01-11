@@ -172,3 +172,37 @@ export const updateMyProfile = async (
     }
   }
 };
+
+export const updatePassword = async (req: Request, res: Response) => {
+  try {
+    let userId = (req as any).id;
+    let { oldPassword, newPassword, confirmPassword } = req.body;
+
+    const user = await updatePasswordService(
+      userId,
+      oldPassword,
+      newPassword,
+      confirmPassword,
+    );
+
+    return sendSuccessMessage(res, "Password updated successfully", 200, null);
+  } catch (err: any) {
+    if (err.message === "OLD_PASSWORD_DIDNOT_MATCH") {
+      return sendErrorMessage(res, "Old password didnot match", 400);
+    }
+    if (err.message === "NEW_PASSWORD AND CONFIRM_PASSWORFD DIDNOT MATCH") {
+      return sendErrorMessage(
+        res,
+        "New password and confirm password didnot match",
+        400,
+      );
+    }
+    if (err.message === "ID_NOT_FOUND") {
+      return sendErrorMessage(res, "Id not found", 400);
+    }
+    if (err.message === "USER_NOT_FOUND") {
+      return sendErrorMessage(res, "User not found", 400);
+    }
+    return sendErrorMessage(res, "Error occured while updating password", 400);
+  }
+};
