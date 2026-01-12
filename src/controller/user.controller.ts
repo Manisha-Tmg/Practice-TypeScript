@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import {
   createUserService,
+  deleteUserByIdService,
   forgotPasswordService,
   loginUserService,
   myProfileService,
@@ -205,5 +206,25 @@ export const updatePassword = async (req: Request, res: Response) => {
       return sendErrorMessage(res, "User not found", 400);
     }
     return sendErrorMessage(res, "Error occured while updating password", 400);
+  }
+};
+
+export const deleteUserById = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  try {
+    let userId = req.params.id as string;
+    const user = await deleteUserByIdService(userId);
+    sendSuccessMessage(
+      res,
+      "Use rDelated fetched successfully",
+      200,
+      user as any,
+    );
+  } catch (err: any) {
+    if (err.message === "ID_NOT_FOUND" || err.message === "USER_NOT_FOUND") {
+      sendErrorMessage(res, "Error Delating profile", 400);
+    }
   }
 };
