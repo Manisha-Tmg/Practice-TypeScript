@@ -1,5 +1,4 @@
-import { DataTypes, Model } from "sequelize";
-import { Column, Table } from "sequelize-typescript";
+import { Column, DataType, Model, Table } from "sequelize-typescript";
 import { UserAttributes, UserCreationAttributes } from "../../types/user.types";
 
 @Table({
@@ -12,39 +11,45 @@ export default class User extends Model<
   UserCreationAttributes
 > {
   @Column({
-    type: DataTypes.UUID,
-    defaultValue: DataTypes.UUIDV4,
+    type: DataType.UUID,
+    defaultValue: DataType.UUIDV4,
     primaryKey: true,
   })
   declare id: string;
 
   @Column({
-    type: DataTypes.STRING,
-    allowNull: true,
+    type: DataType.STRING,
+    allowNull: false,
   })
   declare name: string;
 
   @Column({
-    type: DataTypes.STRING,
-    allowNull: true,
+    type: DataType.STRING,
+    allowNull: false,
   })
   declare email: string;
 
   @Column({
-    type: DataTypes.STRING,
-    allowNull: true,
+    type: DataType.STRING,
+    allowNull: false,
   })
   declare password: string;
 
   @Column({
-    type: DataTypes.STRING,
-    allowNull: true,
+    type: DataType.STRING,
+    allowNull: false,
   })
   declare address: string;
 
   @Column({
-    type: DataTypes.STRING,
-    allowNull: true,
+    type: DataType.STRING,
+    allowNull: false,
   })
   declare phone: string;
+
+  @Column({
+    type: DataType.ENUM("user", "admin", "superAdmin"),
+    allowNull: false,
+  })
+  declare role: "user" | "admin" | "superAdmin";
 }

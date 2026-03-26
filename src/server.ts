@@ -1,12 +1,14 @@
-import { configDotenv } from "dotenv";
+import dotenv from "dotenv";
+dotenv.config();
+
 import { connectToDb } from "./database/connection";
 import { App } from "./config/app";
+import adminSeed from "./seed/superAdmin.seed";
 
-configDotenv();
-
-const Port = process.env.PORT;
+const Port = process.env.PORT || 5050;
 async function start() {
   await connectToDb();
+  await adminSeed();
 
   const appInstance = new App();
 

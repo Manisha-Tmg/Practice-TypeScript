@@ -5,6 +5,7 @@ export interface UserAttributes {
   password: string;
   address: string;
   phone: string;
+  role: "user" | "admin" | "superAdmin";
 }
 
 export interface UserCreationAttributes {
@@ -13,4 +14,5 @@ export interface UserCreationAttributes {
   password: string;
   address: string;
   phone: string;
+  role: "user" | "admin" | "superAdmin";
 }
