@@ -8,6 +8,4 @@ const {
   SUPER_ADMIN_ADDRESS,
 } = process.env;
 
-
-
-const createAdmin
+// const createAdmin
