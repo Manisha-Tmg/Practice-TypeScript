@@ -3,12 +3,14 @@ export interface UserAttributes {
   name: string;
   email: string;
   password: string;
-  phone: number;
+  address: string;
+  phone: string;
 }
 
 export interface UserCreationAttributes {
   name: string;
   email: string;
   password: string;
-  phone: number;
+  address: string;
+  phone: string;
 }

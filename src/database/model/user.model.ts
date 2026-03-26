@@ -23,6 +23,7 @@ export default class User extends Model<
     allowNull: true,
   })
   declare name: string;
+
   @Column({
     type: DataTypes.STRING,
     allowNull: true,
@@ -34,4 +35,16 @@ export default class User extends Model<
     allowNull: true,
   })
   declare password: string;
+
+  @Column({
+    type: DataTypes.STRING,
+    allowNull: true,
+  })
+  declare address: string;
+
+  @Column({
+    type: DataTypes.STRING,
+    allowNull: true,
+  })
+  declare phone: string;
 }
