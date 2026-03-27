@@ -65,6 +65,22 @@ export const loginUserService = async (email: string, password: string) => {
   }
 };
 
+export const forgotPasswordService = async (email: string) => {
+  const user = await User.findOne({ where: { email } });
+  if (!user) {
+    throw new Error("Invalid_EMAIL");
+  }
+
+  const details = {
+    id: user.id,
+  };
+
+  const token = await jwt.sign(details, secret_Key as any, {
+    expiresIn: "1h",
+  });
+
+  await user.save();
+};
 export const readAllUserService = async () => {
   try {
     const user = await User.findAll();
