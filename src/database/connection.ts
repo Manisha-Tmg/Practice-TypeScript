@@ -11,7 +11,6 @@ const sequelize = new Sequelize({
   models: [__dirname + "/model"],
 });
 
-console.log("DB Password:", process.env.DB_PASSWORD);
 export const connectToDb = async (): Promise<void> => {
   // connect to database
   try {

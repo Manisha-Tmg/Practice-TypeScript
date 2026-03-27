@@ -50,6 +50,7 @@ export default class User extends Model<
   @Column({
     type: DataType.ENUM("user", "admin", "superAdmin"),
     allowNull: false,
+    defaultValue: "user",
   })
   declare role: "user" | "admin" | "superAdmin";
 }
